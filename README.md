@@ -15,7 +15,7 @@ The playback works be reding a recipy stored in a file from \automator\recipies 
 ++100,1,200,225    
 ++50,0,225,225
 ```    
-this is a simple .recipy file that will wait 100 ms before right clicking at x = 200px and y = 225px from the top left corner of the current active window.    
+this is a simple .recipy file that will wait 100 ms before right clicking at x = 200px and y = 225px from the top left corner of the current active window.  After that it will wait 50 ms and left click at x = 225 and y = 225
 *Note: the contents of the recipy define actions for one iteration of playback.  When starting a recipy you will be asked how many times to repeat the recipy.*
     
 these files can become more complex to add dynamic behavior like this
