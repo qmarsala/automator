@@ -4,7 +4,7 @@
 press f4 to open the main menu    
 then select log clicks.    
 this will capture your click actions and write a .recipy in \output\clicklog.recipy    
-this folder can be modified by adding custom commands.    
+this file can be modified by adding custom commands.    
 
 
 ## The playback    
