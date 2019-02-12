@@ -31,30 +31,19 @@ There are two main types of commands, setup commands and automator commands
 ### **setup commands**    
 setup commands are user defined functions in the \dynamicbehaviors\onClick.ahk file.    
 these lines will tie the invocation of that function to an alias that can be used in automator commands.    
-*Note: currently only one of each setup command per recipy is supported.*    
 
-to setup a function to run on click events that can alter the click itself, use ':' before and after your alias char,
+to setup a function to run on click events, use ':' before and after your alias,
 followed by the name of the function that should be invoked.    
-```:o:functionName``` (setup dynamic click behavior tied to 'o')    
+```:myAlias:functionName``` (setup dynamic click behavior tied to 'o')    
 the function will be passed a context object with the following properties:    
+- preClickDelayMs
 - clickX
 - clickY
 - isRightClick
 - playbackLoopCount
     
 the function should return an object with the same properties with new calculated values for the click.    
-if the object returned is missing any or all of the properites, the original values will be used.
-
-to setup a function to run on click events that can alter the pre click delay, use '-' before and after your alias char, followed by the name of the function that should be invoked.    
-```-d-functionName``` (setup dynamic delay behavior tied to 'd')    
-the function will be passed a context object with the following properites:
-- clickX
-- clickY
-- isRightClick
-- playbackLoopCount
-    
-the function should return the pre click delay in ms.    
-if it does not, the delay will default to 0.
+any property not returned will use default values. (more on those later.)
 
 ### **action commands**    
 action commands are regular clicks often from your clicklog, and user defined functions in the \dynamicbehaviors\actions.ahk file.    
@@ -67,54 +56,87 @@ in place actions look like this:
 in place actions are function that will be passed a context object with the following properties by default
 - playbackLoopCount
     
-the return value of these functions should be a bool.  this will determin if subsequent commands should be processed, or if the recipy should conclude here.  true to continue, false to stop loop.    
-*Note: this object is dynamic and you can add properties to it to be accessed by other action commands, or in subsequant playback loops.*    
+the return value of these functions should be a bool.  this will determin if subsequent commands should be processed, or if the recipy should conclude here.  true to continue, false to end the current loop iteration.    
+*Note: this object is dynamic and you can add properties to it to be accessed by other action commands, and/or in subsequant playback loops.*    
 
 ## Using setup commands in action commands    
 to use a setup command, place the alias of the setup between the two '+' chars of a regular click action.    
 ```
-:x:demoClickFunc
--y-demoDelayFunc
-+x+delayMs,isRightClick,clickX,clickY
-+y+delayMs,isRightClick,clickX,clickY
+:df:demoFunc
++df+delayMs,isRightClick,clickX,clickY
++df+delayMs,isRightClick,clickX,clickY
 ```    
 you can add multiple setup commands to a single click action like this
 
 ```
-:x:demoClickFunc
--y-demoDelayFunc
-+x,y+delayMs,isRightClick,clickX,clickY
+:a:demoFuncA
+:b:demoFuncB
++a,b+delayMs,isRightClick,clickX,clickY
 ```    
 when binding setup commands to click actions, any inputs to the commands you do not need can be ommited.    
 for example, if you did not need the original intended click data, you could invoke both set up commands like this    
 
 ```
-:x:demoClickFunc
--y-demoDelayFunc
-+x,y+
+:a:demoFuncA
+:b:demoFuncB
++a,b+
 ```    
 this will require your functions to provide all data points to be used in the click action.    
-if you provide values, they will be the input to your function calls, and serve as default click data.  This can be useful when you want to dynamically wait before clicking a known location.  Or when you want to wait a known amount of time before clicking a dynamic location.    
+if you provide values, they will be the values of the context passed to your function calls, and serve as default click data.  This can be useful when you want to dynamically wait before clicking a known location.  Or when you want to wait a known amount of time before clicking a dynamic location.    
 example:    
 waiting dynamic time for known click
 
 ```
--d-demoDelayFunc
-+d+0,0,100,100
+-wait-waitForMenu
++wait+0,0,100,100
 ```    
 waiting known time for dynamic click
 ```
-:c:demoClickFunc
-+c+100,0,0,0
+:cot:clickOptionTwo
++cot+100,0,0,0
 ```    
-default values can be ommited, so the above is the same as    
+default values you do not want to override can be ommited, so the above is the same as    
 ```
-:c:demoClickFunc
-+c+100
+:cot:clickOptionTwo
++cot+100
 ```    
 putting commas with empty values will use the last commands values    
 ```
-:c:demoClickFunc
+:cot:clickOptionTwo
 ++100,0,20,200
-+c+,,,,  <-- this will be passed 100,0,20,200 as the default values
++cot+,,,,  <-- this will be passed 100,0,20,200 as the default values
 ```    
+
+## More on the examples
+sample onClick.ahk file to show what the implementations may look like for the above example .recipy's.
+
+```ahk
+ifOptionPresent(context)
+{
+    WinGetPos,,, aWidth, aHeight, A
+    ImageSearch, foundX, foundY, 0, 0, aWidth, aHeight, *20 images\option.png
+    return ErrorLevel = 0
+}
+
+clickOptionTwo(context)
+{
+    contextUpdates := {}
+    contextUpdates.clickY := context.clickY + 35
+    return contextUpdates
+}
+
+waitForMenu(context)
+{
+    while menuNotVisable()
+    {
+        Sleep, 500
+    }
+}
+
+menuNotVisable()
+{
+    WinGetPos,,, aWidth, aHeight, A
+    ImageSearch, foundX, foundY, 0, 0, aWidth, aHeight, *20 images\menu.png
+    return ErrorLevel != 0
+}
+```
