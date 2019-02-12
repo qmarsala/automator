@@ -43,12 +43,12 @@ the function will be passed a context object with the following properties:
 - playbackLoopCount
     
 the function should return an object with the same properties with new calculated values for the click.    
-any property not returned will use default values. (more on those later.)
+any property not returned will use default values. (more on those later.)    
 *Note: you do not need to return a playbackLoopCount value, you cannot update this property*
 
 ### **action commands**    
 action commands are regular clicks often from your clicklog, and user defined functions in the \dynamicbehaviors\actions.ahk file.    
-these actions can be placed anywhere following the setup actions, and will run in the order they are in from top down.    
+these actions can be placed anywhere following the setup commands, and will run in the order they are in from top down.    
 regular clicks look like this:    
 ```++delayMs,isRightClick,clickX,clickY```    
 in place actions look like this:    
