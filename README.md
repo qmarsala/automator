@@ -8,7 +8,7 @@ this file can be modified by adding custom commands.
 
 
 ## The playback    
-The playback works be reding a recipy stored in a file from \automator\recipies folder with the .recipy extension.    
+The playback works be reding a recipy stored in a file from \automator\recipes folder with the .recipy extension.    
 .recipy files consist of a list of commands read from the top down.  
 ### a .recipy file    
 ```
