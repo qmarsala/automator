@@ -57,7 +57,7 @@ in place actions look like this:
 in place actions are function that will be passed a context object with the following properties by default
 - playbackLoopCount
     
-the return value of these functions should be a bool.  this will determin if subsequent commands should be processed, or if the recipy should conclude here.  true to continue, false to end the current loop iteration.    
+the return value of these functions should be a bool.  this will determin if subsequent commands should be processed, or if the recipy should conclude here.  true to continue, false to end the current loop iteration.        
 *Note: this object is dynamic and you can add properties to it to be accessed by other action commands, and/or in subsequant playback loops.*    
 
 ## Using setup commands in action commands    
