@@ -34,7 +34,7 @@ these lines will tie the invocation of that function to an alias that can be use
 
 to setup a function to run on click events, use ':' before and after your alias,
 followed by the name of the function that should be invoked.    
-```:myAlias:functionName``` (setup dynamic click behavior tied to 'o')    
+```:myAlias:functionName``` (setup dynamic click behavior tied to 'myAlias')    
 the function will be passed a context object with the following properties:    
 - preClickDelayMs
 - clickX
