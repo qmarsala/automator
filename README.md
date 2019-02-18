@@ -29,7 +29,7 @@ lets take a look at commands to see what is possible.
 ## commands    
 There are two main types of commands, setup commands and automator commands    
 ### **setup commands**    
-setup commands are user defined functions in the \dynamicbehaviors\onClick.ahk file.    
+setup commands are user defined functions in the \dynamicbehaviors\onBeforeClick.ahk file.    
 these lines will tie the invocation of that function to an alias that can be used in automator commands.    
 
 to setup a function to run on click events, use ':' before and after your alias,
@@ -109,7 +109,7 @@ putting commas with empty values will use the last commands values
 ```    
 
 ## More on the examples
-sample onClick.ahk file to show what the implementations may look like for the above example .recipy's.
+sample onBeforeClick.ahk file to show what the implementations may look like for the above example .recipy's.
 
 ```ahk
 ifOptionPresent(context)
