@@ -31,12 +31,12 @@ debug("ready")
 Return
 
 ;Hotkeys
-F1::
+^F1::
     info("F1 pressed. - Showing main menu")
     Menu, MainMenu, Show
 Return
 
-F2::Reload
+^F2::Reload
 
 ;Menu handlers
 toggleClickLogHandler:

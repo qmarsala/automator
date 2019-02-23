@@ -17,6 +17,8 @@ error(message)
 
 _writeLog(level, message)
 {
-    line := Format("[{}] {}", level, message)
+    FormatTime, fTime,, MM/dd_HH:mm:ss:
+    fTime := % fTime . A_MSec
+    line := Format("[{}] {} - {}", level, fTime, message)
     appendLine(line, global logFilePath)
 }

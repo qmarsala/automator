@@ -1,7 +1,20 @@
 # Welcome to Automator    
+## Hotkeys    
+Control F1 - Open menu    
+Control F2 - Restart automator    
+    
+The current version of Automator is largely the limited implementation used to come up with and test the original idea.    
+Only inline functions work as documented with the exception that the context works a bit differently.    
+You will be passed a context object, but it cannot be changed and only has a playbackLoopCount property.    
+Setup commands also work but are setup like this ```>f>functionName``` and have the following limitations:    
+Only one per script.    
+Aliases can only be once char.    
+They are also invoked differently as well.    
+
+
 *Note: the follwoing documents a future state of the automator, and for now serves as a requirements/preview of whats to come document.*
 ## The click logger    
-press f4 to open the main menu    
+press control f1 to open the main menu    
 then select log clicks.    
 this will capture your click actions and write a .recipy in \output\clicklog.recipy    
 this file can be modified by adding custom commands.    

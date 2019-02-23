@@ -6,6 +6,7 @@ global clickActionDelimeter := ","
 
 buildCommand(line, context)
 {
+    line := StrReplace(line, "+")
     if (charIsFunctionIndicator(line, 1))
     {
         return buildFunctionCommand(line, context)
@@ -38,6 +39,7 @@ buildFunctionCommand(line, context)
 buildClickActionCommand(line, context)
 {
     fields := StrSplit(line, global clickActionDelimeter)
+    debug(Format("fields {} {} {} {}", fields[1], fields[2], fields[3], fields[4]))
     command := new ClickActionCommand(fields[1], fields[2], fields[3], fields[4], context)
     return command
 }
