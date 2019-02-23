@@ -3,20 +3,21 @@
 #Warn, ClassOverwrite
 #Include %A_ScriptDir%\lib\logger.ahk
 #Include %A_ScriptDir%\lib\record\clickEventHub.ahk
+#Include %A_ScriptDir%\legacy\playback.ahk
 
 SetWorkingDir, %A_ScriptDir%
 CoordMode, Mouse, Window
 
-;config and startup
+;todo: improve config and startup
 global recipesDir := % A_ScriptDir . "\recipes"
 global logFilePath := % A_ScriptDir . "\log.txt"
-global clickLogFilePath := % recipesDir . "\clicklog.dcsv"
+global clickLogFilePath := % recipesDir . "\clicklog.recipy"
 
 debug("setting up menu")
 
 Menu, MainMenu, Add, Log Clicks, toggleClickLogHandler
 Menu, MainMenu, Add
-    loop, files, %recipesDir%\*.dcsv
+    loop, files, %recipesDir%\*.recipy
     {
         Menu, PlaybackMenu, Add, %A_LoopFileName%, playbackHandler
     }
@@ -45,7 +46,6 @@ Return
 
 playbackHandler:
     filePath := % recipesDir . "\" . A_ThisMenuItem
-    MsgBox, , Not supported yet, %filePath%
-    ; InputBox, loopCount, Setup Playback, How many loops?
-    ; playback(filePath, loopCount)
+    InputBox, loopCount, Setup Playback, How many loops?
+    playback(filePath, loopCount)
 Return

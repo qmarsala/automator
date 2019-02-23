@@ -1,4 +1,3 @@
-#Include, %A_ScriptDir%\lib\logger.ahk
 #Include, %A_ScriptDir%\lib\fileAppender.ahk
 
 registerClickEventHandlers()

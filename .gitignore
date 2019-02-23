@@ -1,4 +1,4 @@
 
 log\.txt
 
-recipes/clicklog\.dcsv
+recipes/*\.recipy
