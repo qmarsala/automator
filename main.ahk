@@ -3,6 +3,7 @@
 #Warn, ClassOverwrite
 #Include %A_ScriptDir%\lib\logger.ahk
 #Include %A_ScriptDir%\lib\record\clickEventHub.ahk
+#Include %A_ScriptDir%\lib\file.ahk
 #Include %A_ScriptDir%\legacy\playback.ahk
 
 SetWorkingDir, %A_ScriptDir%
@@ -16,6 +17,7 @@ global clickLogFilePath := % recipesDir . "\clicklog.recipy"
 debug("setting up menu")
 
 Menu, MainMenu, Add, Log Clicks, toggleClickLogHandler
+Menu, MainMenu, Add, Save Last Click Log, saveClickLogHandler
 Menu, MainMenu, Add
     loop, files, %recipesDir%\*.recipy
     {
@@ -42,6 +44,12 @@ Return
 toggleClickLogHandler:
     Menu, MainMenu, ToggleCheck, Log Clicks
     toggleClickEventHandlers()
+Return
+
+saveClickLogHandler:
+    InputBox, recipyName, Save As, Recipy Name:
+    message := saveNewRecipy(recipyName)
+    MsgBox,,, %message%
 Return
 
 playbackHandler:

@@ -1,4 +1,4 @@
-#Include, %A_ScriptDir%\lib\fileAppender.ahk
+#Include, %A_ScriptDir%\lib\file.ahk
 
 debug(message)
 {
