@@ -10,6 +10,8 @@ Setup commands also work but are setup like this ```>f>functionName``` and have 
 Only one per script.    
 Aliases can only be once char.    
 They are also invoked differently as well.    
+Instead of placing the alias inbetween two + chars, the letter takes the place of the sleepMs position in the command.    
+ex: ```f,0,200,200```    
 
 
 *Note: the follwoing documents a future state of the automator, and for now serves as a requirements/preview of whats to come document.*
@@ -101,7 +103,7 @@ example:
 waiting dynamic time for known click
 
 ```
--wait-waitForMenu
+:wait:waitForMenu
 +wait+0,0,100,100
 ```    
 waiting known time for dynamic click
