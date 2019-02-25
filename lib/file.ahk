@@ -9,9 +9,17 @@ saveNewRecipy(recipyName)
     {
         return "Invalid Recipy Name"
     }
-    global clickLogFilePath
-    global recipesDir
-    newRecipyPath := % recipesDir . "\" . recipyName . ".recipy"
+    clickLogFilePath := Settings.ClickLogFilePath
+    newRecipyPath := Settings.RecipesDir . "\" . recipyName . ".recipy"
     FileCopy, %clickLogFilePath%, %newRecipyPath%
     return "Success"
+}
+
+keepFileSmallerThanMb(filePath, maxSizeMb := 1)
+{
+    FileGetSize, logFileSize, %filePath%, M
+    if (logFileSize >= maxSizeMb)
+    {
+        FileDelete, %filePath%
+    }
 }

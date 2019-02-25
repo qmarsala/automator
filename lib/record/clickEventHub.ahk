@@ -35,5 +35,5 @@ _handleClick(rightClick)
 _writeEvent(mouseEvent)
 {
     line := Format("++{},{},{},{}", mouseEvent.timeDelta, mouseEvent.isRightClick, mouseEvent.x, mouseEvent.y)
-    appendLine(line, global clickLogFilePath)
+    appendLine(line, Settings.ClickLogFilePath)
 }

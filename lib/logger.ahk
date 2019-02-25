@@ -1,5 +1,3 @@
-#Include, %A_ScriptDir%\lib\file.ahk
-
 debug(message)
 {
     _writeLog("debug", message)
@@ -17,8 +15,20 @@ error(message)
 
 _writeLog(level, message)
 {
+    logFilePath := Settings.LogFilePath
+    keepFileSmallerThanMb(logFilePath, 1)
+    line := _formatLogWithTime(level, message)
+    appendLine(line, logFilePath)
+}
+
+_formatLogWithTime(level, message)
+{
+    timeStamp := _getTimeStamp()
+    return Format("[{}] {} - {}", level, timeStamp, message)
+}
+
+_getTimeStamp()
+{
     FormatTime, fTime,, MM/dd_HH:mm:ss:
-    fTime := % fTime . A_MSec
-    line := Format("[{}] {} - {}", level, fTime, message)
-    appendLine(line, global logFilePath)
+    return % fTime . A_MSec
 }
