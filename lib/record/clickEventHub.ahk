@@ -1,5 +1,3 @@
-#Include, %A_ScriptDir%\lib\file.ahk
-
 registerClickEventHandlers()
 {
     Hotkey, ~LButton, _onLeftClick
