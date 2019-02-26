@@ -31,7 +31,7 @@ _saveClickLogHandler()
 
 _playbackHandler()
 {
-    filePath := % recipesDir . "\" . A_ThisMenuItem
+    filePath := Settings.RecipesDir . "\" . A_ThisMenuItem
     InputBox, loopCount, Setup Playback, How many loops?
     playback(filePath, loopCount)
 }
