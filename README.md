@@ -23,7 +23,7 @@ this file can be modified by adding custom commands.
 
 
 ## The playback    
-The playback works be reding a recipy stored in a file from \automator\recipes folder with the .recipy extension.    
+The playback works be reading a recipy stored in a file from \automator\recipes folder with the .recipy extension.    
 .recipy files consist of a list of commands read from the top down.  
 ### a .recipy file    
 ```
@@ -41,46 +41,67 @@ these files can become more complex to add dynamic behavior like this
 ```    
 lets take a look at commands to see what is possible.
 
-## commands    
-There are two main types of commands, setup commands and automator commands    
-### **setup commands**    
-setup commands are user defined functions in the \dynamicbehaviors\onBeforeClick.ahk file.    
-these lines will tie the invocation of that function to an alias that can be used in automator commands.    
-
-to setup a function to run on click events, use ':' before and after your alias,
-followed by the name of the function that should be invoked.    
-```:myAlias:functionName``` (setup dynamic click behavior tied to 'myAlias')    
-the function will be passed a context object with the following properties:    
-- preClickDelayMs
-- clickX
-- clickY
-- isRightClick
-- playbackLoopCount
+# commands    
+There are two types of commands, click commands and continuation predicate commands    
     
-the function should return an object with the same properties with new calculated values for the click.    
-any property not returned will use default values. (more on those later.)    
-*Note: you do not need to return a playbackLoopCount value, you cannot update this property*
-
-### **action commands**    
-action commands are regular clicks often from your clicklog, and user defined functions in the \dynamicbehaviors\actions.ahk file.    
-these actions can be placed anywhere following the setup commands, and will run in the order they are in from top down.    
-regular clicks look like this:    
+## click commands
+click commands are regular clicks denoted by the double plus syntax ```++``` in your clicklog.
+click commands look like this:    
 ```++delayMs,isRightClick,clickX,clickY```    
-continuation predicate actions look like this:    
+
+#### Pre-click Processing Pipeline
+The double plus syntax allows you to setup a pre click processing pipeline.    
+Provide a comma seperated list of functions to call (called from left to right) between the plus signs.        
+These functions must be defined in the \dynamicbehaviors\functions.ahk file.    
+```+funcName1,funcName2+delayMs,isRightClick,clickX,clickY```    
+
+Each function will be passed a context object with the following properties:
+- clickArgs
+    - preClickDelayMs
+    - clickX
+    - clickY
+    - isRightClick
+- bag
+- playbackLoopCount    
+    
+**clickArgs** shows you the values that will be used for the next click.  You can update these in your function if needed.    
+**bag** is an associative array for you to hang on to state that you need persisted through each click for the duration of the recipy's playback.  
+**playbackLoopCount** shows you the current loop count in the recipy's playback.    
+
+#### Function Alias
+to setup a function alias, use ':' before and after your alias,
+followed by the name of the function that should be invoked.    
+```:maf:myAliasedFunction``` (setup dynamic click behavior tied to 'maf')    
+```+maf+delayMs,isRightClick,clickX,clickY``` (use the alias)    
+
+### The click
+A click command will send a mouse click command, after pre-click processing pipeline.    
+The default arguments are specified in line following the double plus and are as follows:    
+**delayMs** controls how long in miliseconds to pause before sending the click command.    
+**isRightClick** either a 1 or 0.  1 for right click, 0 for left click.    
+**clickX** the X coordinate to click
+**clickY** the Y coordinate to click    
+*Note: (0,0) is the top left of the current active window.*    
+    
+Any changes to these values in the context object passed to the pre-click pipeline will be used instead.
+    
+## continuation predicate commands    
+continuation predicate commands are user defined functions in the \dynamicbehaviors\functions.ahk file.    
+continuation predicate commands look like this:    
 ```<functionName``` (run this function, first loop)    
 ```>functionName ``` (run this function, each loop)    
-continuation predicate actions are function that will be passed a context object with the following properties by default
-- playbackLoopCount
-    
-the return value of these functions should be a bool.  this will determin if subsequent commands should be processed, or if the recipy should conclude here.  true to continue, false to end the current loop iteration.        
-*Note: this object is dynamic and you can add properties to it to be accessed by other action commands, and/or in subsequant playback loops.*    
+continuation predicate commands will be passed a context object with the following properties:
+- bag
+- playbackLoopCount     
 
-## Using setup commands in action commands    
-to use a setup command, place the alias of the setup between the two '+' chars of a regular click action.    
+the return value of these functions should be a bool.  This will determin if subsequent commands should be processed, or if the current iteration of the recipy should conclude here.  true to continue, false to end the current loop iteration.   
+
+# Examples    
+To use an aliased pre-click function, place the alias between the two '+' chars of a regular click action.    
 ```
 :df:demoFunc
-+df+delayMs,isRightClick,clickX,clickY
-+df+delayMs,isRightClick,clickX,clickY
++df+0,1,100,100
++df+0,0,110,120
 ```    
 you can add multiple setup commands to a single click action like this
 
@@ -89,8 +110,8 @@ you can add multiple setup commands to a single click action like this
 :b:demoFuncB
 +a,b+delayMs,isRightClick,clickX,clickY
 ```    
-when binding setup commands to click actions, any inputs to the commands you do not need can be ommited.    
-for example, if you did not need the original intended click data, you could invoke both set up commands like this    
+any inputs to the commands you do not need can be ommited.    
+for example, if you did not need the original intended click data, you could invoke the pipeline like this    
 
 ```
 :a:demoFuncA
@@ -98,7 +119,7 @@ for example, if you did not need the original intended click data, you could inv
 +a,b+
 ```    
 this will require your functions to provide all data points to be used in the click action.    
-if you provide values, they will be the values of the context passed to your function calls, and serve as default click data.  This can be useful when you want to dynamically wait before clicking a known location.  Or when you want to wait a known amount of time before clicking a dynamic location.    
+If you provide values in the command, they will be the values of the context's clickArgs passed to your function calls, and serve as default click data.  This can be useful when you want to dynamically wait before clicking a known location.  Or when you want to wait a known amount of time before clicking a dynamic location.    
 example:    
 waiting dynamic time for known click
 
@@ -124,7 +145,7 @@ putting commas with empty values will use the last commands values
 ```    
 
 ## More on the examples
-sample onBeforeClick.ahk file to show what the implementations may look like for the above example .recipy's.
+sample of what the implementations inside functions.ahk file may look like for the above example .recipy's.
 
 ```ahk
 ifOptionPresent(context)
@@ -136,9 +157,9 @@ ifOptionPresent(context)
 
 clickOptionTwo(context)
 {
-    contextUpdates := {}
-    contextUpdates.clickY := context.clickY + 35
-    return contextUpdates
+    optionOffset := 35
+    origClickY := context.clickArgs.clickY
+    context.clickArgs.clickY := origClickY + optionOffset
 }
 
 waitForMenu(context)
