@@ -52,7 +52,7 @@ click commands look like this:
 #### Pre-click Processing Pipeline
 The double plus syntax allows you to setup a pre click processing pipeline.    
 Provide a comma seperated list of functions to call (called from left to right) between the plus signs.        
-These functions must be defined in the \dynamicbehaviors\functions.ahk file.    
+These functions must be defined in the \dynamics\functions.ahk file.    
 ```+funcName1,funcName2+delayMs,isRightClick,clickX,clickY```    
 
 Each function will be passed a context object with the following properties:
@@ -86,7 +86,7 @@ The default arguments are specified in line following the double plus and are as
 Any changes to these values in the context object passed to the pre-click pipeline will be used instead.
     
 ## continuation predicate commands    
-continuation predicate commands are user defined functions in the \dynamicbehaviors\functions.ahk file.    
+continuation predicate commands are user defined functions in the \dynamics\functions.ahk file.    
 continuation predicate commands look like this:    
 ```<functionName``` (run this function, first loop)    
 ```>functionName ``` (run this function, each loop)    

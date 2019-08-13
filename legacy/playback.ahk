@@ -1,4 +1,4 @@
-#Include, %A_ScriptDir%\dynamics\actions.ahk
+#Include, %A_ScriptDir%\dynamics\functions.ahk
 #Include, %A_ScriptDir%\legacy\commandBuilder.ahk
 
 playback(filePath, maxLoops)
