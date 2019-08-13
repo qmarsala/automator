@@ -66,10 +66,10 @@ action commands are regular clicks often from your clicklog, and user defined fu
 these actions can be placed anywhere following the setup commands, and will run in the order they are in from top down.    
 regular clicks look like this:    
 ```++delayMs,isRightClick,clickX,clickY```    
-in place actions look like this:    
-```<functionName``` (run this function in place, first loop)    
-```>functionName ``` (run this function in place, each loop)    
-in place actions are function that will be passed a context object with the following properties by default
+continuation predicate actions look like this:    
+```<functionName``` (run this function, first loop)    
+```>functionName ``` (run this function, each loop)    
+continuation predicate actions are function that will be passed a context object with the following properties by default
 - playbackLoopCount
     
 the return value of these functions should be a bool.  this will determin if subsequent commands should be processed, or if the recipy should conclude here.  true to continue, false to end the current loop iteration.        
