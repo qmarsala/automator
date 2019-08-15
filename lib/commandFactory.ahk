@@ -1,10 +1,17 @@
 createCommand(recipeLine) {
     ;todo: validate recipeLine
-    debug(recipeLine)
-    if (InStr(recipeLine, "<") || InStr(recipeLine, ">")) {
-        return createPredicateCommand(recipeLine)
+    if (InStr(recipeLine, "<")) {
+        return createOneTimePredicateCommand(recipeLine)
     }   
+    if (InStr(recipeLine, ">")) {
+        return createPredicateCommand(recipeLine)
+    }
     return createClickCommand(recipeLine)
+}
+
+createOneTimePredicateCommand(recipeLine) {
+    funcName := SubStr(recipeLine, 2)
+    return new OneTimePredicateCommand(funcName)
 }
 
 createPredicateCommand(recipeLine) {
@@ -13,7 +20,7 @@ createPredicateCommand(recipeLine) {
 }
 
 createClickCommand(recipeLine) {
-    matchIndex := RegExMatch(recipeLine, "O)\+(.+)\+(.+)", matches)
+    matchIndex := RegExMatch(recipeLine, "O)\+(.*)\+(.*)", matches)
     pipe := {}
     if (matches[1] != "") {
         pipe := _createPreClickPipeline(matches[1])

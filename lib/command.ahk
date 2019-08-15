@@ -36,18 +36,18 @@ class Command {
 
 class ClickCommand extends Command {
     _delayMs := 0
+    _isRightCick := false
     _clickX := 0
     _clickY := 0
-    _isRightCick := false
     _pipeline := {}
 
-    __New(delayMs, clickX, clickY, isRightClick, pipeline) {
+    __New(delayMs, isRightClick, clickX, clickY, pipeline) {
         this._delayMs := delayMs
+        this._isRightCick := isRightClick
         this._clickX := clickX
         this._clickY := clickY
-        this._isRightCick := isRightClick
         this._pipeline := pipeline
-        this._executionContext.ClickArgs := { DelayMs: this._delayMs, X: this._clickX, Y: this._clickY, IsRightClick: this._isRightCick }
+        this._executionContext.ClickArgs := { DelayMs: this._delayMs, IsRightClick: this._isRightCick, X: this._clickX, Y: this._clickY }
     }
 
     __Delete() {
@@ -56,7 +56,6 @@ class ClickCommand extends Command {
 
     _OnBeforeExecute() {
         this._pipeline.Execute(this._executionContext)
-        debug("ClickCommand finished OnBeforeExecute")
     }
 
     _InnerExecute() {
@@ -72,11 +71,6 @@ class ClickCommand extends Command {
         } else {
             click(_clickArgs.X, _clickArgs.Y)
         }
-        debug("ClickCommand finished InnerExecute")
-    }
-
-    _OnAfterExecute() {
-        debug("ClickCommand finished OnAfterExecute")
     }
 }
 
@@ -92,16 +86,19 @@ class PredicateCommand extends Command {
         this._predicateFn := {}
     }
 
-    _OnBeforeExecute() {
-        debug("PredicateCommand finished OnBeforeExecute")
-    }
-
     _InnerExecute() {
-        this.ShouldContinue := this._predicateFn.Call(this._executionContext)
-        debug("PredicateCommand finished InnerExecute")
+        predicateResult := this._predicateFn.Call(this._executionContext)
+        if (predicateResult != "") {
+            this.ShouldContinue := predicateResult
+        }
     }
+}
 
-    _OnAfterExecute() {
-        debug("PredicateCommand finished OnAfterExecute")
+class OneTimePredicateCommand extends PredicateCommand {
+    _InnerExecute() {
+        if (this._executionContext.Iterator = 1) 
+        {
+            base._InnerExecute()
+        }
     }
 }

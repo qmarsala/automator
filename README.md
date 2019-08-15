@@ -44,7 +44,7 @@ These functions must be defined in the \dynamics\functions.ahk file.
 ```+funcName1,funcName2+delayMs,isRightClick,clickX,clickY```    
 
 Each function will be passed a context object with the following properties:
-- clickArgs
+- ClickArgs
     - DelayMs
     - X
     - Y
@@ -76,7 +76,7 @@ Any changes to these values in the context object passed to the pre-click pipeli
 ## continuation predicate commands    
 continuation predicate commands are user defined functions in the \dynamics\functions.ahk file.    
 continuation predicate commands look like this:    
-```<functionName``` (run this function, first loop) - Not Implemented, either < or >, will be run each loop.  Use an if Iterator = 1 in your predicate as a workaround.    
+```<functionName``` (run this function, first loop)    
 ```>functionName ``` (run this function, each loop)    
 continuation predicate commands will be passed a context object with the following properties:
 - Bag

@@ -13,7 +13,6 @@ class PlaybackRuntime {
     }
 
     Play(times = 1) {
-        debug(times)
         Loop, %times%
         {
             this._iterator := A_Index

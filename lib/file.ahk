@@ -19,10 +19,8 @@ parseRecipy(recipyName)
 {
     recipyPath := Settings.RecipesDir . "\" . recipyName
     commands := []
-    debug(recipyPath)
     Loop, Read, %recipyPath%
     {
-        debug(A_LoopReadLine)
         commands[A_Index] := createCommand(A_LoopReadLine)
     }
     return commands
