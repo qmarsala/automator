@@ -1,11 +1,11 @@
-appendLine(line, filePath)
+appendLine(line, filePath) 
 {
     FileAppend % line . "`n", %filePath%
 }
 
-saveNewRecipy(recipyName)
+saveNewRecipy(recipyName) 
 {
-    if (recipyName = "")
+    if (recipyName = "") 
     {
         return "Invalid Recipy Name"
     }
@@ -13,6 +13,19 @@ saveNewRecipy(recipyName)
     newRecipyPath := Settings.RecipesDir . "\" . recipyName . ".recipy"
     FileCopy, %clickLogFilePath%, %newRecipyPath%
     return "Success"
+}
+
+parseRecipy(recipyName) 
+{
+    recipyPath := Settings.RecipesDir . "\" . recipyName
+    commands := []
+    debug(recipyPath)
+    Loop, Read, %recipyPath%
+    {
+        debug(A_LoopReadLine)
+        commands[A_Index] := createCommand(A_LoopReadLine)
+    }
+    return commands
 }
 
 keepFileSmallerThanMb(filePath, maxSizeMb := 1)

@@ -2,18 +2,6 @@
 ## Hotkeys    
 Control F1 - Open menu    
 Control F2 - Restart automator    
-    
-The current version of Automator is largely the limited implementation used to come up with and test the original idea.    
-Only inline functions work as documented with the exception that the context works a bit differently.    
-You will be passed a context object, but it cannot be changed and only has a playbackLoopCount property.    
-Setup commands also work but are setup like this ```>f>functionName``` and have the following limitations:    
-Only one per script.    
-Aliases can only be once char.    
-They are also invoked differently as well.    
-Instead of placing the alias inbetween two + chars, the letter takes the place of the sleepMs position in the command.    
-ex: ```f,0,200,200```    
-
-
 *Note: the follwoing documents a future state of the automator, and for now serves as a requirements/preview of whats to come document.*
 ## The click logger    
 press control f1 to open the main menu    
@@ -68,7 +56,7 @@ Each function will be passed a context object with the following properties:
 **bag** is an associative array for you to hang on to state that you need persisted through each click for the duration of the recipy's playback.  
 **playbackLoopCount** shows you the current loop count in the recipy's playback.    
 
-#### Function Alias
+#### Function Alias (Not Implemented)
 to setup a function alias, use ':' before and after your alias,
 followed by the name of the function that should be invoked.    
 ```:maf:myAliasedFunction``` (setup dynamic click behavior tied to 'maf')    
@@ -88,7 +76,7 @@ Any changes to these values in the context object passed to the pre-click pipeli
 ## continuation predicate commands    
 continuation predicate commands are user defined functions in the \dynamics\functions.ahk file.    
 continuation predicate commands look like this:    
-```<functionName``` (run this function, first loop)    
+```<functionName``` (run this function, first loop) - Not Implemented, either < or >, will be run each loop.  Use an if Iterator = 1 in your predicate as a workaround.    
 ```>functionName ``` (run this function, each loop)    
 continuation predicate commands will be passed a context object with the following properties:
 - bag
