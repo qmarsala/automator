@@ -45,12 +45,12 @@ These functions must be defined in the \dynamics\functions.ahk file.
 
 Each function will be passed a context object with the following properties:
 - clickArgs
-    - preClickDelayMs
-    - clickX
-    - clickY
-    - isRightClick
-- bag
-- playbackLoopCount    
+    - DelayMs
+    - X
+    - Y
+    - IsRightClick
+- Bag
+- Iterator
     
 **clickArgs** shows you the values that will be used for the next click.  You can update these in your function if needed.    
 **bag** is an associative array for you to hang on to state that you need persisted through each click for the duration of the recipy's playback.  
@@ -79,8 +79,8 @@ continuation predicate commands look like this:
 ```<functionName``` (run this function, first loop) - Not Implemented, either < or >, will be run each loop.  Use an if Iterator = 1 in your predicate as a workaround.    
 ```>functionName ``` (run this function, each loop)    
 continuation predicate commands will be passed a context object with the following properties:
-- bag
-- playbackLoopCount     
+- Bag
+- Iterator    
 
 the return value of these functions should be a bool.  This will determin if subsequent commands should be processed, or if the current iteration of the recipy should conclude here.  true to continue, false to end the current loop iteration.   
 
@@ -146,8 +146,8 @@ ifOptionPresent(context)
 clickOptionTwo(context)
 {
     optionOffset := 35
-    origClickY := context.clickArgs.clickY
-    context.clickArgs.clickY := origClickY + optionOffset
+    origClickY := context.clickArgs.Y
+    context.clickArgs.Y := origClickY + optionOffset
 }
 
 waitForMenu(context)
